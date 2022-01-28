@@ -1,0 +1,35 @@
+---
+title: "Lab 2"
+author: "Kate Nelson"
+date: "1/24/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Lab Assignment
+
+For this lab I'd like you to work a bit more with the `gapminder` data then pull in another dataset from the `datasets` package and play with it a bit too. As before, I would like to see your work in an R Markdown (in .html) format. 
+
+1. For the `gapminder` data order countries in reverse alphabetical order, then display the first 15. This should work out pretty well in this case, but can you think of any potential issues with this process that might lead to ordering problems in a different dataset? (Hint: Go back to the basics and check to make sure you understand what kind of data you are working with.)
+2. Calculate and display the mean, median, and standard deviation for the Life expectancy, Population, and GDPperCapita in the `gapminder` dataset.
+3. Calculate and display in a single dataframe the mean values for Life expectancy, Population, and GDPperCapita for each continent.
+4. Create a scatter plot of the global average Life expectancy over time and display the first 5 records for the dataset used to build this plot. Customize the display of the plot to make it less *blah*.
+5. Pull in a dataset of your choice from the `datasets` package that has a `dataframe` structure (not sure what's available, try `?datasets`). Then examine the structure of the data including: class types, header information, and dimensions.
+6. Calculate general summary statistics for the dataset. 
+7. Calculate summary statistics for groups/subsets of the dataset (these groupings could be based on time period, species, location, etc...).
+8. Create 2 plots of your choice, one showing grouped data and the other showing ungrouped data. Give each plot a title and descriptive x and y axis labels. Customize at least one graphic option (color, point type, line width, etc...) on these plots.
+9. Make sure your Markdown document is organized and legible.
+10. Knit your R Markdown file and upload a copy of the knit .html file (make sure code and output is visible) to Canvas.
+
+
+
+
+
+
+
+  
+  
+  

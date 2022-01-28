@@ -1,0 +1,148 @@
+---
+title: "Base R Indexing"
+author: "Kate Nelson"
+date: "1/24/2022"
+output: slidy_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Today's Objectives
+
+- Understand how to: examine the structure of datasets, return column names, examine the class of data variables.
+- Know the differences between class types.
+- Understand indexing structure in R.
+- Know how to conduct basic logical tests.
+- Understand the basics of how to write readable and reproducible code.
+
+
+## Examining data 
+
+```{r, echo=FALSE}
+
+library(tidyverse)
+data(mtcars)
+
+```
+
+- You already know that you can use `head()` to preview a dataset and that this will output a few rows of a dataset and associated columns or row names. For some types of datasets this will also return information on variable class type. (e.g. tbl_df or tibble, a subclass of data.frame for which as much information as possible is provided for inspection to enable data exploration) 
+- Another function that is great for previewing data is `glimpse()` of the `tidyverse` package.
+  - E.g. `glimpse(mtcars)`
+  `r glimpse(mtcars)`
+- We can also extract variable and row names (if they exist - not included as a column that can be manipulated) using `names()`, `colnames()`, and `rownames()`.
+  - E.g. `names(mtcars)``r names(mtcars)`
+  `colnames(mtcars)``r colnames(mtcars)`
+  `rownames(mtcars)``r rownames(mtcars)`
+  
+## Dataframe dimensions
+
+- We can return the dimensions of a dataframe using the `dim()` function. This returns two numbers, first the number of rows then the number of columns.
+- To return the number of observations in a vector we can use `length()`.
+  - E.g. `length(mtcars$mpg)``r length(mtcars$mpg)`
+- We can also use the functions `nrow()` and `ncol()` to return either the x or y dimensions.
+  - `length()` can be used to return the number of columns and rows too when proper indexing is applied to a dataframe.
+    - E.g. `length(mtcars[1,]``r length(mtcars[1,])`
+  
+- These functions are useful when we want to save a dimension/s to an object for later use, or just use a dimension value in a calculation. 
+
+## Data structure
+
+- We can get information on data object structure using `str()`.
+  - E.g. `str(mtcars)``r str(mtcars)`
+  - This gives a preview of dimensions, object class type, and data class type.
+- We can also use `class()` to specifically check the class of data objects or variables.
+  - E.g. `class(mtcars$mpg)``r class(mtcars$mpg)`
+- What basic types of data classes might you encounter?
+  - character: `"a", "swc"`
+  - numeric: `2, 15.5`
+  - integer: `2L` (the L tells R to store this as an integer)
+  - logical: `TRUE, FALSE`
+  - complex: `1+4i` (complex numbers with real and imaginary parts)
+  - factor: `male, female` (a **nominal** value stored as a vector of integers where an internal vector of character strings [original values] is mapped to the integers. Note that it is possible to alter the ordering/mapping of original values to integers in a factor variable.)
+- We'll talk about spatial data classes later.
+
+## Notation and Indexing
+
+- The most basic way of calling a specific variable in an R dataframe is using a `$`. Variables can be called by writing the name of the dataframe, followed by `$`, followed by the variable name (no spaces and no quotations).
+  - E.g. `mtcars$cyl``r mtcars$cyl`
+- We can also use square brackets `[]` to access values using R indexing. Note that unlike some other programming languages R indexing starts with **1**.
+  - Within the brackets you can refer to numerical row or column index values (e.g. row 2, column 1), or you can use column names (in quotations).
+  - Leaving and index value blank defaults to all possible values.
+  - For vectors there is only one dimension to specify.
+  - For dataframes there are two dimensions to specify. First x (row), then y (column), sperated by a comma `,`.
+    - E.g. 
+    
+```{r df_index}
+mtcars[ ,"cyl"]
+mtcars["Mazda RX4", ]
+mtcars[1, ]
+mtcars[ ,1]
+mtcars[1, 3]
+```
+    
+## More Indexing
+
+- You already know that `:` can be used to create a numeric sequence. It is also used to denote selection of a range of dataset indices.
+  - E.g. `mtcars[1:3, "cyl"]``r mtcars[1:3, "cyl"]`
+- We can also use `c()` within an indexing structure to pull out columns by name.
+  - E.g. `mtcars[1:10, c("cyl","hp","wt")]``r mtcars[1:10, c("cyl","hp","wt")]`
+
+
+- Double square brackets `[[]]` are used for subsetting *lists*. See [this site](https://rstudio-education.github.io/hopr/r-notation.html#dollar-signs-and-double-brackets) for some more examples.
+  - Using single brackets `[]` on a list returns a sub-list.
+  - Using double brackets `[[]]` on a list returns the values in the sub-list.
+  - Using double and single brackets in combination `[[]][]` can be used to return a value or subset of values from a sub-list.
+    - This combined notation will by default index columns of a dataframe if an x and y value are not provided.
+  - E.g. 
+  
+```{r lists}
+  
+  pets <- c('cats', 'dogs', 'goldfish', 'elephant', 'armadillo')
+  my_list <- list(mtcars, pets)
+  class(my_list)
+  my_list[1]
+  my_list[[1]]
+  my_list[[1]][2]
+  my_list[[1]][1:10, 2]
+  my_list[[2]]
+  my_list[[2]][5]
+ 
+```
+
+## Logic tests
+
+- It is common to conduct logic tests in R to determine if a value meets some specified criteria. This is very useful for filtering, subsetting, and data manipulation. Values returned from logical tests are either `TRUE` or `FALSE`.
+- We can evaluate equality using `==`
+  - E.g. `cats <- 42``r cats <- 42` 
+  `cats == 41``r cats == 41`
+- We can evaluate relative values using `<`, `>`, `<=`, or `>=`. Note that greater than or equal to are written as you would say them with the greater than or less than symbol first and the equal sign second.
+  - E.g. `cats > 41``r cats > 41`
+  `cats <= 42``r cats <= 42`
+- We can also evaluate *non-equality* using `!=` where the `!` indicates the word **"not"**.
+  - E.g. `cats != 1000000000000``r cats != 1000000000000`
+  
+## Code style guide
+
+- Writing code that can be reasonably read by other human beings (including your future self) is enormously important.
+  - This goes for code in R scripts and Markdown documents.
+- General rules of thumb:
+  - Use spaces! Particularly between function arguments and object names and assignment code.
+  - Use line returns (hit Enter!). Use line spaces between separate lines of unrelated code. Instead of having a very long line of code for a complex function, put different function arguments (separated by commas `,`) on separate lines.
+  - Use `#` to create headers in your code. Writing five consecutive pound signs `#####` will trigger a code folding option in your scripts.
+    -E.g. ##################################
+           ### Calculate Awesomeness Index ##
+           ##################################
+  - Use indentation. Indent lines of code that are a subset of some main analysis process to indicate relationships across pieces of code. This becomes more important and helpful as your code gets more complex.
+  
+          
+
+  
+ 
+
+## Let's Code 
+
+
+
+
